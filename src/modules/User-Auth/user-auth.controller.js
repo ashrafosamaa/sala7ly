@@ -145,6 +145,9 @@ export const forgotPassword = async (req, res, next) => {
     if (!user) {
         return next(new Error("User not found", { cause: 404 }));
     }
+    if(user.accountActive == false){
+        return next(new Error("Please Verify your account first", { cause: 404 }));
+    }
     const resetCode = Math.floor(1000 + Math.random() * 9000).toString();
 
     user.passwordResetCode = crypto
