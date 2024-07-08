@@ -2,7 +2,7 @@ import { Router } from "express";
 import { authUser } from "../../middlewares/auth-user.middleware.js";
 import { authAdmin } from "../../middlewares/auth-admin.middleware.js";
 import { allowedExtensions } from "../../utils/allowed-extensions.js";
-import {multerMiddleHost} from "../../middlewares/multer.middleware.js"
+import { multerMiddleHost } from "../../middlewares/multer.middleware.js"
 import { validationMiddleware } from "../../middlewares/validation.middleware.js";
 
 import * as userController from './user.controller.js'
@@ -11,6 +11,7 @@ import * as validator from "./user.validator.js"
 import expressAsyncHandler from "express-async-handler";
 
 const router = Router();
+
 
 router.get('/', authAdmin(), validationMiddleware(validator.getAllUsersValidator),
     expressAsyncHandler(userController.getAllUsers))
@@ -48,15 +49,6 @@ expressAsyncHandler(userController.updateProfilePicture))
 
 router.delete('/deleteaccount', authUser(), validationMiddleware(validator.noValidator),
     expressAsyncHandler(userController.deleteAccount))
-
-// router.post('/add-address', authUser(), validationMiddleware(validator.addUserAddressValidator),
-//     expressAsyncHandler(userController.addUserAddress))
-
-// router.get('/alladdresses', authUser(), validationMiddleware(validator.noValidator),
-//     expressAsyncHandler(userController.getProfileAddresses))
-
-// router.delete('/deleteaddress/:addressId', authUser(), validationMiddleware(validator.addressIdValidator), 
-//     expressAsyncHandler(userController.removeUserAddress))
 
 
 export default router;

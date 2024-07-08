@@ -74,23 +74,3 @@ export const updateProfilePictureValidator = {
         oldPublicId: Joi.string().required()
     })
 }
-
-
-export const addUserAddressValidator = {
-    body: Joi.object({
-        alias: Joi.string().required(),
-        street: Joi.string().required(),
-        region: Joi.string().required(),
-        city: Joi.string().required(),
-        country: Joi.string().required(),
-        postalCode: Joi.string().optional().pattern(/^[0-9]+$/, "i"),
-        phone: Joi.string().optional().pattern(/^[0-9]+$/, "i"),
-    })
-}
-
-
-export const addressIdValidator = {
-    params: Joi.object({
-        addressId: Joi.string().length(24).hex().required()
-    })
-}

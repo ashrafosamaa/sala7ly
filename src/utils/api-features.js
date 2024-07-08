@@ -35,15 +35,16 @@ export class APIFeatures {
     }
     
     //  Search on category , style , subject with any field
-    searchCategories(search) {
+    searchServices(search) {
         const queryFiler = {}
 
         if (search.title) queryFiler.title = { $regex: search.title, $options: 'i' }
-        if (search.slug) queryFiler.slug = { $regex: search.slug, $options: 'i' }
 
         this.mongooseQuery = this.mongooseQuery.find(queryFiler)
         return this
     }
+
+
     //   Search on product with any field
     searchProduct(search) {
         const queryFiler = {}

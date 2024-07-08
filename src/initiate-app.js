@@ -25,6 +25,7 @@ export const initiateApp = (app, express)=> {
     app.use('/userAuth', routers.userAuthRouter)
     app.use('/user', routers.userRouter)
     app.use('/admin', routers.adminRouter)
+    app.use('/service', routers.serviceRouter)
 
     app.use('*', (req, res, next)=> {
         return next(new Error('Page not found', { cause: 404 }))

@@ -1,12 +1,10 @@
 import { APIFeatures } from "../../utils/api-features.js";
-// import { allAddresses } from "./user-utils/all-addresses.js";
 import { generateUniqueString } from "../../utils/generate-unique-string.js"
-
 
 import User from "../../../DB/models/user.model.js";
 // import Order from "../../../DB/models/order.model.js";
-
 import cloudinaryConnection from "../../utils/cloudinary.js";
+
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 

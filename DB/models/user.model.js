@@ -32,17 +32,6 @@ const userSchema = new Schema({
         public_id: { type: String }
     },
     folderId: { type: String, unique: true },
-    addresses: [
-        {
-            alias: String,
-            street: String,
-            region: String,
-            city: String,
-            country: String,
-            postalCode: String,
-            phone: String,
-        },
-    ],
     accountActivateCode: String,
     accountActivateExpires: Date,
     accountActive: {

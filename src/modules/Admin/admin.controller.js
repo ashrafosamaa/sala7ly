@@ -1,7 +1,7 @@
 import Admin from "../../../DB/models/admin.model.js";
+
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
-
 
 export const login = async (req, res, next) => {
     // check Admin data in req.body

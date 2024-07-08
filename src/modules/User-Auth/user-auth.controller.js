@@ -1,5 +1,4 @@
 import User from "../../../DB/models/user.model.js";
-
 import sendEmailService from "../../servcies/send-email-service.js"
 
 import crypto from 'crypto'
