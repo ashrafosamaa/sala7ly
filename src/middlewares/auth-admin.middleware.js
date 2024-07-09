@@ -24,4 +24,3 @@ export const authAdmin = (accessRoles = "admin") => {
         }
     }
 }
-

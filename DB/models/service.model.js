@@ -16,10 +16,7 @@ const serviceSchema = new Schema({
         public_id: { type: String }
     },
     folderId: { type: String, unique: true },
-}, {timestamps: true,
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true }
-})
+}, {timestamps: true})
 
 
 const Service = model("Service", serviceSchema);

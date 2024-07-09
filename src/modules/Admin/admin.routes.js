@@ -23,4 +23,3 @@ router.patch('/update-password', authAdmin(),
 
 
 export default router
-

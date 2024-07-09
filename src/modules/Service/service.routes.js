@@ -34,4 +34,3 @@ router.get('/search', validationMiddleware(validator.searchValidator),
 
 
 export default router
-

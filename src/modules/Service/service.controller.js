@@ -55,7 +55,7 @@ export const getAllServices = async (req, res, next)=> {
         return next(new Error('No Services found', { cause: 404 }))
     }
     res.status(200).json({ 
-        msg: "Service fetched successfully", 
+        msg: "Services fetched successfully", 
         statusCode: 200, 
         service 
     })
@@ -118,10 +118,9 @@ export const deleteService = async (req, res, next)=> {
 
 export const search = async (req, res, next)=> {
     // destruct data from req.query
-    const {page, size, ...serach} = req.query
+    const {...serach} = req.query
     const features = new APIFeatures(req.query, Service.find().select("-createdAt -updatedAt -__v -folderId"))
-    .pagination({page, size})
-    .searchServices(serach)
+    .searchTitle(serach)
     const service = await features.mongooseQuery
     if(!service.length) {
         return next(new Error('No Service found', { cause: 404 }))

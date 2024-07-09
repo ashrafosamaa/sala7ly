@@ -26,6 +26,7 @@ export const initiateApp = (app, express)=> {
     app.use('/user', routers.userRouter)
     app.use('/admin', routers.adminRouter)
     app.use('/service', routers.serviceRouter)
+    app.use('/spare', routers.spareRouter)
 
     app.use('*', (req, res, next)=> {
         return next(new Error('Page not found', { cause: 404 }))
@@ -33,6 +34,5 @@ export const initiateApp = (app, express)=> {
 
     app.use(globalResponse)
 
-    const server = app.listen(port, ()=> console.log(`server is running on host`))
-
+    app.listen(port, ()=> console.log(`server is running on host`))
 }

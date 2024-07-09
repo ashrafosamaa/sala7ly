@@ -25,4 +25,3 @@ export const authUser = (accessRoles = "user") => {
         }
     }
 }
-

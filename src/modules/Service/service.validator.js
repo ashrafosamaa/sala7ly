@@ -34,8 +34,6 @@ export const updateServiceValidator = {
 
 export const searchValidator = {
     query: Joi.object({
-        page: Joi.number().optional(),
-        size: Joi.number().optional(),
         title: Joi.string().optional(),
     })
 }
