@@ -27,6 +27,8 @@ export const initiateApp = (app, express)=> {
     app.use('/admin', routers.adminRouter)
     app.use('/service', routers.serviceRouter)
     app.use('/spare', routers.spareRouter)
+    app.use('/service-order', routers.serviceOrderRouter)
+    app.use('/spare-order', routers.spareOrderRouter)
 
     app.use('*', (req, res, next)=> {
         return next(new Error('Page not found', { cause: 404 }))

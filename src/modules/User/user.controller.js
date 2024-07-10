@@ -2,7 +2,8 @@ import { APIFeatures } from "../../utils/api-features.js";
 import { generateUniqueString } from "../../utils/generate-unique-string.js"
 
 import User from "../../../DB/models/user.model.js";
-// import Order from "../../../DB/models/order.model.js";
+import SpareOrder from "../../../DB/models/spare-order.model.js";
+import ServiceOrder from "../../../DB/models/service-order.model.js";
 import cloudinaryConnection from "../../utils/cloudinary.js";
 
 import bcrypt from "bcryptjs"
@@ -90,7 +91,7 @@ export const updateUser = async(req, res, next)=> {
         user
     })
 }
-//////////////////
+
 export const deleteUser = async(req, res, next)=> {
     // destruct data from user
     const {userId} = req.params
@@ -99,28 +100,43 @@ export const deleteUser = async(req, res, next)=> {
     if (!deleteUser) {
         return next (new Error("User not found", { cause: 404 }))
     }
-    // check orders are done only
-    // const orders = await Order.find({user: userId})
-    // if(orders.length){
-    //     for(const order of orders){
-    //         if(order.orderStatus != "Received" || order.orderStatus != "Refunded" || order.orderStatus != "Cancelled"){
-    //             return next (new Error("You cannot delete this account because he has an order that is not received yet", { cause: 400 }))
-    //         }
-    //     }
-    // }
+    // check spare orders are done only
+    const spareOrders = await SpareOrder.find({userId})
+    if(spareOrders.length){
+        for(const spareOrder of spareOrders){
+            if(spareOrder.orderStatus != "Paid" && spareOrder.orderStatus != "Cancelled"){
+                return next (new Error("You cannot delete this account because he has an order or more that is not received yet", 
+                    { cause: 400 }))
+            }
+        }
+    }
+    // check service orders are done only
+    const serviceOrders = await ServiceOrder.find({userId})
+    if(serviceOrders.length){
+        for(const serviceOrder of serviceOrders){
+            if(serviceOrder.orderStatus != "Paid" && serviceOrder.orderStatus != "Cancelled"){
+                return next (new Error("You cannot delete this account because he has an order or more that is not received yet", 
+                    { cause: 400 }))
+            }
+        }
+    }
+    // delete photo
     if(deleteUser.profileImg.public_id){
         const folder = `${process.env.MAIN_FOLDER}/Users/${deleteUser.folderId}`
         await cloudinaryConnection().api.delete_resources_by_prefix(folder)
         await cloudinaryConnection().api.delete_folder(folder)
     }
     await deleteUser.deleteOne()
+    // delete user data
+    await SpareOrder.deleteMany({userId})
+    await ServiceOrder.deleteMany({userId})
     // send response
     res.status(200).json({
         msg: "User deleted successfully",
         statusCode: 200
     })
 }
-//////////////////
+
 export const addProfilePicture = async (req, res, next)=> {
     // destruct data from user
     const {_id} = req.authUser
@@ -261,7 +277,7 @@ export const updatePassword = async (req, res, next)=> {
         userToken
     })
 }
-//////////////////
+
 export const deleteAccount = async (req, res, next)=> {
     // destruct data from user
     const {_id} = req.authUser
@@ -270,25 +286,39 @@ export const deleteAccount = async (req, res, next)=> {
     if (!deleteUser) {
         return next (new Error("User not found", { cause: 404 }))
     }
-    // check orders are done only
-    // const orders = await Order.find({user: _id})
-    // if(orders.length){
-    //     for(const order of orders){
-    //         if(order.orderStatus != "Received" || order.orderStatus != "Refunded" || order.orderStatus != "Cancelled"){
-    //             return next (new Error("You cannot delete this account because you have an order that is not received yet", { cause: 400 }))
-    //         }
-    //     }
-    // }
+    // check spare orders are done only
+    const spareOrders = await SpareOrder.find({userId: _id})
+    if(spareOrders.length){
+        for(const spareOrder of spareOrders){
+            if(spareOrder.orderStatus != "Paid" && spareOrder.orderStatus != "Cancelled"){
+                return next (new Error("1 You cannot delete this account because you have an order or more that is not received yet", 
+                    { cause: 400 }))
+            }
+        }
+    }
+    // check service orders are done only
+    const serviceOrders = await ServiceOrder.find({userId: _id})
+    if(serviceOrders.length){
+        for(const serviceOrder of serviceOrders){
+            if(serviceOrder.orderStatus != "Paid" && serviceOrder.orderStatus != "Cancelled"){
+                return next (new Error("2 You cannot delete this account because you have an order or more that is not received yet", 
+                    { cause: 400 }))
+            }
+        }
+    }
+    // delete photo
     if(deleteUser.profileImg.public_id){
         const folder = `${process.env.MAIN_FOLDER}/Users/${deleteUser.folderId}`
         await cloudinaryConnection().api.delete_resources_by_prefix(folder)
         await cloudinaryConnection().api.delete_folder(folder)
     }
     await deleteUser.deleteOne()
+    // delete user data
+    await SpareOrder.deleteMany({userId: _id})
+    await ServiceOrder.deleteMany({userId: _id})
     // send response
     res.status(200).json({
         msg: "User deleted successfully",
         statusCode: 200
     })
 }
-//////////////////
