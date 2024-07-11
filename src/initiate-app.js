@@ -30,7 +30,11 @@ export const initiateApp = (app, express)=> {
     app.use('/service-order', routers.serviceOrderRouter)
     app.use('/spare-order', routers.spareOrderRouter)
 
-    app.use('*', (req, res, next)=> {
+    app.get('/', (req, res, next)=> {
+        res.send("<h1> Welcome In Sala7ly App </h1>");
+    })
+
+    app.all('*', (req, res, next)=> {
         return next(new Error('Page not found', { cause: 404 }))
     })
 
