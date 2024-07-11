@@ -31,7 +31,7 @@ const userSchema = new Schema({
         secure_url: { type: String },
         public_id: { type: String }
     },
-    folderId: { type: String, unique: true },
+    folderId: { type: String },
     accountActivateCode: String,
     accountActivateExpires: Date,
     accountActive: {
