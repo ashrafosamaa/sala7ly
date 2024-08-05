@@ -4,7 +4,7 @@ import { generateUniqueString } from "../../utils/generate-unique-string.js";
 import Service from "../../../DB/models/service.model.js";
 import cloudinaryConnection from "../../utils/cloudinary.js";
 
-import slugify from "slugify"; 
+import slugify from "slugify";
 
 export const addService = async (req, res, next)=> {
     // destruct data from req.body
@@ -48,7 +48,7 @@ export const addService = async (req, res, next)=> {
 export const getAllServices = async (req, res, next)=> {
     // destruct data from req.query
     const {page, size} = req.query
-    const features = new APIFeatures(req.query, Service.find().select("-createdAt -updatedAt -__v -folderId"))
+    const features = new APIFeatures(req.query, Service.find().select("title serviceImg.secure_url"))
     .pagination({page, size})
     const service = await features.mongooseQuery
     if(!service.length) {
@@ -64,7 +64,7 @@ export const getAllServices = async (req, res, next)=> {
 export const getServiceById = async (req, res, next)=> {
     // destruct data from req.params
     const {serviceId} = req.params
-    const service = await Service.findById(serviceId).select("-createdAt -updatedAt -__v -folderId")
+    const service = await Service.findById(serviceId).select("title serviceImg.secure_url")
     if(!service) {
         return next(new Error('No service found', { cause: 404 }))
     }
@@ -85,7 +85,8 @@ export const updateService = async (req, res, next)=> {
     // slug
     const slug = slugify(title, '-')
     // update Service
-    const serviceUpdated = await Service.findByIdAndUpdate(serviceId, {title, slug}, {new: true}).select("-createdAt -updatedAt -__v -folderId")
+    const serviceUpdated = await Service.findByIdAndUpdate(serviceId, {title, slug}, {new: true})
+        .select("title serviceImg.secure_url")
     if (!serviceUpdated){
         return next(new Error('Error while updating Service', { cause: 500 }))
     }
@@ -119,7 +120,7 @@ export const deleteService = async (req, res, next)=> {
 export const search = async (req, res, next)=> {
     // destruct data from req.query
     const {...serach} = req.query
-    const features = new APIFeatures(req.query, Service.find().select("-createdAt -updatedAt -__v -folderId"))
+    const features = new APIFeatures(req.query, Service.find().select("title serviceImg.secure_url"))
     .searchTitle(serach)
     const service = await features.mongooseQuery
     if(!service.length) {

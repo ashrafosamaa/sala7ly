@@ -45,7 +45,7 @@ export const addSpare = async (req, res, next)=> {
 export const getAllSpares = async (req, res, next)=> {
     // destruct data from req.query
     const {page, size} = req.query
-    const features = new APIFeatures(req.query, Spare.find().select("-createdAt -updatedAt -__v -folderId"))
+    const features = new APIFeatures(req.query, Spare.find().select("title basePrice appliedPrice coverImage.secure_url"))
     .pagination({page, size})
     const spare = await features.mongooseQuery
     if(!spare.length) {
@@ -61,7 +61,7 @@ export const getAllSpares = async (req, res, next)=> {
 export const getSpareById = async (req, res, next)=> {
     // destruct data from req.params
     const {spareId} = req.params
-    const spare = await Spare.findById(spareId).select("-createdAt -updatedAt -__v -folderId")
+    const spare = await Spare.findById(spareId).select("title basePrice appliedPrice coverImage.secure_url discount stock")
     if(!spare) {
         return next(new Error('No spare found', { cause: 404 }))
     }
@@ -99,8 +99,7 @@ export const updateSpare = async (req, res, next)=> {
     const updatedSpare = await spare.save()
     res.status(200).json({
         msg: 'Spare updated successfully',
-        statusCode: 200, 
-        updatedSpare 
+        statusCode: 200,
     })
 }
 
@@ -126,7 +125,7 @@ export const deleteSpare = async (req, res, next)=> {
 export const search = async (req, res, next)=> {
     // destruct data from req.query
     const {...serach} = req.query
-    const features = new APIFeatures(req.query, Spare.find().select("-createdAt -updatedAt -__v -folderId -desc"))
+    const features = new APIFeatures(req.query, Spare.find().select("title basePrice appliedPrice coverImage.secure_url"))
     .searchTitle(serach)
     const service = await features.mongooseQuery
     if(!service.length) {

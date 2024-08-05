@@ -31,7 +31,7 @@ export const getUser = async(req, res, next)=> {
     // destruct data from user
     const {userId} = req.params
     // get user data
-    const getUser = await User.findById(userId).select("firstName lastName phoneNumber email profileImg")
+    const getUser = await User.findById(userId).select("firstName lastName phoneNumber email profileImg.secure_url")
     if (!getUser) {
         return next(new Error("User not found", { cause: 404 }))
     }
@@ -67,7 +67,7 @@ export const updateUser = async(req, res, next)=> {
     const {userId} = req.params
     const {firstName, lastName, phoneNumber} = req.body
     // find user
-    const user = await User.findById(userId).select("firstName lastName phoneNumber email profileImg")
+    const user = await User.findById(userId).select("firstName lastName phoneNumber email profileImg.secure_url")
     // check user
     if(!user){
         return next (new Error("User not found", { cause: 404 }))
@@ -204,7 +204,7 @@ export const getAccountData = async (req, res, next)=> {
     // destruct data from user
     const {_id} = req.authUser
     // get user data
-    const getUser = await User.findById(_id).select("firstName lastName phoneNumber email profileImg")
+    const getUser = await User.findById(_id).select("firstName lastName phoneNumber email profileImg.secure_url")
     if (!getUser) {
         return next (new Error("User not found", { cause: 404 }))
     }
@@ -221,7 +221,7 @@ export const updateProfileData = async (req, res, next)=> {
     const {_id} = req.authUser
     const{firstName, lastName, phoneNumber} = req.body
     // find user
-    const user = await User.findById(_id).select("firstName lastName phoneNumber email profileImg")
+    const user = await User.findById(_id).select("firstName lastName phoneNumber email profileImg.secure_url")
     // check user
     if(!user){
         return next (new Error("User not found", { cause: 404 }))
