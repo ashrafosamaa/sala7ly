@@ -291,7 +291,7 @@ export const deleteAccount = async (req, res, next)=> {
     if(spareOrders.length){
         for(const spareOrder of spareOrders){
             if(spareOrder.orderStatus != "Paid" && spareOrder.orderStatus != "Cancelled"){
-                return next (new Error("1 You cannot delete this account because you have an order or more that is not received yet", 
+                return next (new Error("You cannot delete this account because you have an order or more that is not received yet", 
                     { cause: 400 }))
             }
         }
@@ -301,7 +301,7 @@ export const deleteAccount = async (req, res, next)=> {
     if(serviceOrders.length){
         for(const serviceOrder of serviceOrders){
             if(serviceOrder.orderStatus != "Paid" && serviceOrder.orderStatus != "Cancelled"){
-                return next (new Error("2 You cannot delete this account because you have an order or more that is not received yet", 
+                return next (new Error("You cannot delete this account because you have an order or more that is not received yet", 
                     { cause: 400 }))
             }
         }
