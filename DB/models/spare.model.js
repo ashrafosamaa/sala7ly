@@ -10,10 +10,6 @@ const spareSchema = new Schema({
         type: String,
         lowercase: true,
     },
-    desc: {
-        type: String,
-        required: true,
-    },
     stock: {
         type: Number,
         required: true, 

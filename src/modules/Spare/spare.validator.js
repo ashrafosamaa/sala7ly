@@ -3,7 +3,6 @@ import Joi from "joi";
 export const addSpareValidator = {
     body: Joi.object({
         title: Joi.string().required().min(3),
-        desc: Joi.string().required().min(3),
         stock: Joi.number().required().min(0).default(1),
         basePrice: Joi.number().required().min(1),
         discount: Joi.number().default(0).min(0).max(99).optional()
@@ -29,7 +28,6 @@ export const IDValidator = {
 export const updateSpareSchema = {
     body: Joi.object({
         title: Joi.string().min(3).optional(),
-        desc: Joi.string().min(3).optional(),
         stock: Joi.number().min(0).optional(),
         basePrice: Joi.number().min(1).optional(),
         discount: Joi.number().min(0).max(99).optional(),

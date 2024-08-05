@@ -8,7 +8,7 @@ import cloudinaryConnection from "../../utils/cloudinary.js";
 
 export const addSpare = async (req, res, next)=> {
     // destruct data from user
-    const { title, desc, stock, basePrice, discount } = req.body
+    const { title, stock, basePrice, discount } = req.body
     // slug
     const slug = slugify(title, '-')
     // price calculation
@@ -28,7 +28,7 @@ export const addSpare = async (req, res, next)=> {
     }
     // spare
     const spare = {
-        title, desc, slug, folderId, basePrice,
+        title, slug, folderId, basePrice,
         discount, appliedPrice, stock, coverImage
     }
     const newSpare = await Spare.create(spare)
@@ -45,7 +45,7 @@ export const addSpare = async (req, res, next)=> {
 export const getAllSpares = async (req, res, next)=> {
     // destruct data from req.query
     const {page, size} = req.query
-    const features = new APIFeatures(req.query, Spare.find().select("-createdAt -updatedAt -__v -folderId -desc"))
+    const features = new APIFeatures(req.query, Spare.find().select("-createdAt -updatedAt -__v -folderId"))
     .pagination({page, size})
     const spare = await features.mongooseQuery
     if(!spare.length) {
@@ -74,7 +74,7 @@ export const getSpareById = async (req, res, next)=> {
 
 export const updateSpare = async (req, res, next)=> {
     // destruct data from the user
-    const { title, desc, basePrice, discount, stock } = req.body
+    const { title, basePrice, discount, stock } = req.body
     const { spareId } = req.params
     // check that spare is found 
     const spare = await Spare.findById(spareId)
@@ -83,12 +83,11 @@ export const updateSpare = async (req, res, next)=> {
             msg: "Spare not found"
         })
     }
-    // title, desc, specs
+    // title, specs
     if(title){
         spare.title = title
         spare.slug = slugify(title, '-')
     }
-    if(desc) spare.desc = desc
     if(stock) spare.stock = stock
     // prices calculation
     const appliedPrice = (basePrice || spare.basePrice) 
