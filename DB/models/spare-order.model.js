@@ -25,7 +25,7 @@ const spareOrderSchema = new mongoose.Schema({
 
     totalPrice:{type: Number, required: true}, // shipping price - coupon is exits , if not = shipping price
 
-    paymentMethod:{type: String, enum:['Cash', 'Online'], default: 'Cash', required: true},
+    paymentMethod:{type: String, enum:['Cash', 'Credit'], default: 'Cash', required: true},
     orderStatus:{type: String , enum:['Placed', 'Paid', 'Delivered', 'Cancelled'], required: true , default: 'Placed'},
 
 },{timestamps: true});

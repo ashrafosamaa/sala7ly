@@ -5,7 +5,7 @@ export const createOrderValidator = {
         shippingAddress: Joi.string().required(),
         serviceId: Joi.string().length(24).hex().required(),
         problemDesc: Joi.string().required(), 
-        orderDate: Joi.string().required(),
+        orderDate: Joi.date().greater(Date.now()-(24*60*60*1000)).required(),
         orderTime: Joi.string().required(), 
         orderType: Joi.string().required().valid("Normal", "Emergency"),
         phoneNumber: Joi.string().required().length(11).pattern(/^[0-9]+$/, "i"),

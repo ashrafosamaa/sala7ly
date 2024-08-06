@@ -48,7 +48,7 @@ export const getMyOrders = async (req, res, next) => {
     const {_id} = req.authUser
     // check that order is found
     const orders = await ServiceOrder.find({userId: _id, orderStatus: { $ne: 'Cancelled' }})
-    .select('problemDesc orderDate orderTime')
+        .select('problemDesc orderDate orderTime orderType')
     // check that order is found
     if(!orders.length) return next(new Error('Orders not found', { cause: 404 }));
     // send response
@@ -65,6 +65,7 @@ export const getOrderById = async (req, res, next) => {
     const {orderId} = req.params;
     // check that order is found
     const order = await ServiceOrder.findOne({_id: orderId, userId: _id})
+    .select('problemDesc orderDate orderTime orderType orderStatus orderItems.title totalPrice');
     // check that order is found
     if(!order) return next(new Error('Order not found', { cause: 404 }));
     // send response

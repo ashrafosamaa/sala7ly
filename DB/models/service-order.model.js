@@ -28,7 +28,7 @@ const serviceOrderSchema = new mongoose.Schema({
     paymentMethod:{type: String, enum:['Cash'], default: 'Cash', required: true},
     orderStatus:{type: String , enum:['Placed', 'Paid', 'Delivered', 'Cancelled'], required: true , default: 'Placed'},
 
-    orderDate:{type: String, required: true},
+    orderDate:{type: Date, required: true},
     orderTime:{type: String, required: true},
     orderType:{type: String, enum:['Normal', 'Emergency'], default: 'Normal', required: true},
 
