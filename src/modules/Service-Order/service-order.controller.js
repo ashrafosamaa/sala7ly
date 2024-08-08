@@ -1,4 +1,6 @@
 import { APIFeatures } from "../../utils/api-features.js"
+import { ordersData } from "./response.model.js";
+import { orderData } from "./response.model.js";
 
 import Service from "../../../DB/models/service.model.js";
 import ServiceOrder from "../../../DB/models/service-order.model.js";
@@ -55,7 +57,7 @@ export const getMyOrders = async (req, res, next) => {
     res.status(200).json({
         msg: 'Orders retrieved successfully', 
         statusCode: 200,
-        orders
+        orders: orders.map(order => ordersData(order))
     })
 }
 
@@ -72,7 +74,7 @@ export const getOrderById = async (req, res, next) => {
     res.status(200).json({
         msg: 'Order retrieved successfully', 
         statusCode: 200,
-        order
+        order: orderData(order)
     })
 }
 

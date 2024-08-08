@@ -52,6 +52,7 @@ export const getMyOrders = async (req, res, next) => {
     const {_id} = req.authUser
     // check that order is found
     const orders = await SpareOrder.find({userId: _id, orderStatus: { $ne: 'Cancelled' }})
+    .populate({path: 'orderItems.spareId', select: 'coverImage.secure_url'})
     .select('orderItems.title totalPrice orderItems.quantity')
     // check that order is found
     if(!orders.length) return next(new Error('Orders not found', { cause: 404 }));
@@ -69,6 +70,8 @@ export const getOrderById = async (req, res, next) => {
     const {orderId} = req.params;
     // check that order is found
     const order = await SpareOrder.findOne({_id: orderId, userId: _id})
+    .populate({path: 'orderItems.spareId', select: 'coverImage.secure_url'})
+    .select('-createdAt -updatedAt -__v')
     // check that order is found
     if(!order) return next(new Error('Order not found', { cause: 404 }));
     // send response
