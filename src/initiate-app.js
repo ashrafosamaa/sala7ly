@@ -35,7 +35,7 @@ export const initiateApp = (app, express)=> {
     })
 
     app.all('*', (req, res, next)=> {
-        return next(new Error('Sorry Page not found', { cause: 404 }))
+        return next(new Error('Page not found', { cause: 404 }))
     })
 
     app.use(globalResponse)
